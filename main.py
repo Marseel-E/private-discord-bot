@@ -5,7 +5,10 @@ import os
 
 load_dotenv('.env')
 
-bot = Bot(command_prefix=when_mentioned_or('.'), intents=Intents.default())
+intents = Intents.default()
+intents.message_content = True
+
+bot = Bot(command_prefix=when_mentioned_or('.'), intents=intents)
 
 
 @bot.event
