@@ -1,20 +1,20 @@
+import os
+
 from discord.ext.commands import Bot, command, when_mentioned_or
 from discord import Intents, Status, Game
 from dotenv import load_dotenv
-import os
+
+from utils import Config
 
 load_dotenv('.env')
 
-intents = Intents.default()
-intents.message_content = True
-
-bot = Bot(command_prefix=when_mentioned_or('.'), intents=intents)
+bot = Bot(command_prefix=when_mentioned_or(Config.prefix), intents=Intents.all())
 
 
 @bot.event
 async def on_ready():
 	print("running")
-	await bot.change_presence(status=Status.online, activity=Game("bodyguard.exe"))
+	await bot.change_presence(status=Status.online, activity=Game(Config.status))
 
 
 if __name__ == '__main__':

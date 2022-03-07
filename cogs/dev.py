@@ -8,7 +8,7 @@ from discord import Embed, User
 from typing import Optional
 from io import StringIO
 
-from utils import Default
+from utils import Default, Config
 
 
 class Dev(Cog):
@@ -29,12 +29,27 @@ class Dev(Cog):
 		"""
 		await ctx.message.delete()
 
-		with open("../logo.png", 'rb') as img:
+		with open(Config.logo_path, 'rb') as img:
 			avatar = img.read()
 
 		await self.bot.user.edit(avatar=avatar)
 
 		await ctx.send("Updated", delete_after=5)
+
+
+	@command(aliases=['uu'])
+	async def update_username(self, ctx: Context, new_username: str = self.bot.name):
+		""" Updates the bot's username.
+
+		Parameters:
+		-----------
+			new_username <str> - The new username.
+		"""
+		await ctx.message.delete()
+
+		await self.bot.user.edit(username=new_username)
+
+		await ctx.send("updated", delete_after=5)
 
 
 	@command(aliases=['dm'])
@@ -43,11 +58,13 @@ class Dev(Cog):
 
 		Parameters:
 		-----------
-			member <discord.Member> - The member to send the message to. (Required)
+			member <discord.User> - The member to send the message to. (Required)
 			message <str> - The message to send to the user. (Required)
 			
 			embeded <bool> - Whether to send an embed or not.
-		""" 
+		"""
+		await ctx.message.delete()
+
 		kwargs = {'content': f"{message}\n\nSupport Server: <{Default.support_server_link}>"} if not (embeded) else {'embed': Embed(title="RPGBruh", description=f"{message}\n\n{Default.support_server}")}
 
 		await member.send(**kwargs)

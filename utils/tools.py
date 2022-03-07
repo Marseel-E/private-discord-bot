@@ -1,19 +1,19 @@
-class _Color:
-	def __init__(self):
-		self.blurple = int("5261f8", 16)
+from typing import TypedDict
 
 
-	def custom(self, hex_code: str) -> int:
-		return int(str(hex_code), 16)
-
-Color = _Color()
+class Color(TypedDict):
+	blurple: int = int("5261f8", 16)
 
 
+class Default(TypedDict):
+	support_server_link: str = "https://discord.com/python"
+	support_server: str = f"[Support Server]({support_server_link})"
+	color: int = Color.blurple
 
-class _Default:
-	def __init__(self):
-		self.support_server_link = "https://discord.com/python"
-		self.support_server = f"[Support Server]({self.support_server_link})"
-		self.color = Color.blurple
 
-Default = _Default()
+class Config(TypedDict):
+	prefix: str = "."
+	status: str = "Protecting Æ ༽༼#0533"
+	join_channel: int = 846981584774103113
+	verify_message: str = "Verify your a human!"
+	logo_path: str = "C:\\Users\\Marsel\\Desktop\\Æ's bodyguard\\logo.png"
