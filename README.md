@@ -18,6 +18,7 @@ This code is free to use as long as you understand it.
 ## Notices
 * Default.support_server_link is not set.
 * Update_avatar lacks custom avatars.
+* Missing adding roles on verification
 
 ## Setup
 1. Download & Install [Python](https://python.org/download). 
