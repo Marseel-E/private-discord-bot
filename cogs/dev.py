@@ -38,7 +38,7 @@ class Dev(Cog):
 
 
 	@command(aliases=['uu'])
-	async def update_username(self, ctx: Context, new_username: str = ""):
+	async def update_username(self, ctx: Context, *, new_username: str = ""):
 		""" Updates the bot's username.
 
 		Parameters:
