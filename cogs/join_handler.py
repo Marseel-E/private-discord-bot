@@ -37,6 +37,7 @@ class Join(Cog):
 
 	@Cog.listener(name="on_member_join")
 	async def on_member_join(self, member: Member):
+		""" Sends a message to the specified channel whenever a member joins with a specific view to them only for verification. """
 		channel = await self.bot.fetch_channel(846981584774103113)
 		message = channel.last_message
 
@@ -50,6 +51,12 @@ class Join(Cog):
 	@command()
 	@is_owner()
 	async def test_join_message(self, ctx: Context, verify_message: Optional[str] = "Verify your a human!"):
+		""" Sends a test message for the join message event.
+
+		Parameters:
+		-----------
+			verify_message <str> - The message to be in the message.
+		"""
 		await ctx.message.delete()
 
 		channel = await self.bot.fetch_channel(846981584774103113)
