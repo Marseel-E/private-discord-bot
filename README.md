@@ -11,6 +11,7 @@ This code is free to use as long as you understand it.
 # 📑 Table of contents
 * [Notices](#notices)
 * [Setup](#setup)
+* [Config](#config)
 * [Features](#developer-commands)
 	* [Developer text-commands](#developer-commands)
 	* [Events](#events)  
@@ -50,6 +51,17 @@ python main.py
 ```
 13. Finally go to [Discord](https://discord.com) and your bot should be online.
 
+## Config
+Theres a couple variables you can configure to your own:
+> prefix (The bot's prefix)  
+> status (The bot's status)  
+> join_channel (The join channel ID)  
+> verify_message (The verify message content)  
+> logo_path (The PATH to the logo image file)  
+
+These can be configured in the [tools.py](https://github.com/Marseel-E/private-discord-bot/blob/main/utils/tools.py) file inside the [utils](https://github.com/Marseel-E/private-discord-bot/blob/main/utils) directory.
+(Just edit the values after the `=` sign)
+
 ## Developer commands
 * ### direct_message `.direct_message|dm @user message [embeded=False]`
 ```py
@@ -70,6 +82,15 @@ Parameters:
 Parameters:
 -----------
 	new_avatar <bool> - Whether to use a custom avatar or not.
+"""
+```
+* ### update_username `.update_username|uu new_username`
+```py
+""" Updates the bot's username.
+
+Parameters:
+-----------
+	new_username <str> - The new username.
 """
 ```
 * ### test_verify `.test_verify|tv [msg]`
