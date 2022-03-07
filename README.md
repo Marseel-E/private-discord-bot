@@ -50,13 +50,13 @@ python main.py
 13. Finally go to [Discord](https://discord.com) and your bot should be online.
 
 ## Developer commands
-* ### direct_message `.direct_message|dm @member message [embeded=False]`
+* ### direct_message `.direct_message|dm @user message [embeded=False]`
 ```py
-""" Sends a direct message to the specified member.
+""" Sends a direct message to the specified user.
 
 Parameters:
 -----------
-	member <discord.Member> - The member to send the message to. (Required)
+	member <discord.User> - The user to send the message to. (Required)
 	message <str> - The message to send to the user. (Required)
 			
 	embeded <bool> - Whether to send an embed or not.
