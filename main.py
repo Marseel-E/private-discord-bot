@@ -1,11 +1,11 @@
-from discord.ext.commands import Bot, command
+from discord.ext.commands import Bot, command, when_mentioned_or
 from discord import Intents, Status, Game
 from dotenv import load_dotenv
 import os
 
 load_dotenv('.env')
 
-bot = Bot(command_prefix='.', intents=Intents.default())
+bot = Bot(command_prefix=when_mentioned_or('.'), intents=Intents.default())
 
 
 @bot.event
