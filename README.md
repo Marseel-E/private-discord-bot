@@ -71,7 +71,7 @@ Parameters:
 	new_avatar <bool> - Whether to use a custom avatar or not.
 """
 ```
-* ### test_join_message `.test_join_message|tjm [msg="Verify your a human!"]`
+* ### test_verify `.test_verify|tv [msg]`
 ```py
 """ Sends a test message for the join message event.
 
