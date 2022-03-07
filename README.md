@@ -1,8 +1,53 @@
-# private-discord-bot
-A simple moderation/utilities bot made for Æ's servers.
-# Table of contents
-* [Developer text-commands](#developer-commands)
-* [Events](#events)
+# 🤖 private-discord-bot
+A simple moderation/utilities bot made for **[Æ ༽༼#0533](https://discord.com/users/470866478720090114)**'s servers.
+
+# 📢 My bots
+**[Connect 4](https://top.gg/bot/795099690609279006)** :fire:  
+**[RPGBruh](https://top.gg/bot/947242264483209269)** :star:  
+
+# 📜 License
+This code is free to use as long as you understand it.
+
+# 📑 Table of contents
+* [Notices](#notices)
+* [Setup](#setup)
+* [Features](#developer-commands)
+	* [Developer text-commands](#developer-commands)
+	* [Events](#events)  
+
+## Notices
+* Default.support_server_link is not set.
+* Update_avatar lacks custom avatars.
+
+## Setup
+1. Download & Install [Python](https://python.org/download). 
+2. Install the latest version of [discord.py](https://github.com/Rapptz/discord.py) by running the following command in a shell (console).
+```bash
+py -m pip install -U git+https://github.com/Rapptz/discord.py
+```
+3. Make a discord application thru [Discord's developer portal](https://discord.com/developers/applications)
+4. Create a bot on the [bot](https://discord.com/developers/applications) tab. (Generate an invite link thru the [Oauth](https://discord.com/developers/applications) tab and invite the bot to your server)
+5. Generate a token by clicking the `Regenerate token` button & copy it by clikcing the `Copy` button.
+6. Clone this repository by running the following command. (Requires [GIT](https://git-scm.com/downloads))
+```bash
+git clone https://Marseel-E/private-discord-bot.git
+```
+7. Open the folder with your desired IDE/Text edittor.
+8. Create a `.env` file in the parent directory.
+9. Write the following in the `.env` file, replacing `YOUR_BOT_TOKEN` with the token you copied in step 5 earlier.
+```
+TOKEN = "YOUR_BOT_TOKEN"
+```
+10. Open a shell in the parent directory. (You can do that by going to your folders/finder and writting `cmd` in the path then clicking ENTER)
+11. Install the dependencies by running the following command.
+```bash
+pip install -U -r requirements.txt
+```
+12. Run the [main.py](https://github.com/Marseel-E/private-discord-bot/blob/main/main.py) file to start the bot. (You can either manually run the file from the folder or run the following command in the shell you started previously)
+```bash
+python main.py
+```
+13. Finally go to [Discord](https://discord.com) and your bot should be online.
 
 ## Developer commands
 * ### direct_message `.direct_message|dm @member message [embeded=False]`
@@ -46,6 +91,34 @@ Parameters:
 	unformatted <bool> - Whether to send the text in a styalized embed or not.
 """
 ```
+* ### load `.load [cog=None]`
+```py
+""" Loads a cog.
+
+Parameters:
+-----------
+	cog <str> - The cog name.
+"""
+```
+* ### unload `.unload [cog=None]`
+```py
+""" Unloads a cog.
+		
+Parameters:
+-----------
+	cog <str> - The cog name.
+"""
+```
+* ### reload `.reload [cog=None]`
+```py
+""" Reloads a cog.
+
+Parameters:
+-----------
+	cog <str> - The cog name.
+"""
+```
+
 ## Events
 * ### on_member_join
 ```py
