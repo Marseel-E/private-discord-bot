@@ -1,7 +1,7 @@
 import os
 
+from discord import Intents, Status, Game, Object, Interaction, Member
 from discord.ext.commands import Bot, command, when_mentioned_or
-from discord import Intents, Status, Game, Object, Interaction
 from discord.app_commands import CommandTree
 from dotenv import load_dotenv
 
