@@ -11,9 +11,10 @@ load_dotenv('.env')
 
 bot = Bot(command_prefix=when_mentioned_or(Config.prefix), intents=Intents.all())
 slashes = CommandTree(bot)
+test_server = Object(id=843994109366501376)
 
 
-@slashes.command(guild=Object(id=843994109366501376))
+@slashes.command(guild=test_server)
 async def kick(interaction: Interaction, member: Member, reason: str = ""):
 	assert (bot.is_owner(interaction.user))
 
@@ -25,7 +26,7 @@ async def kick(interaction: Interaction, member: Member, reason: str = ""):
 @bot.event
 async def on_ready():
 	print("running")
-	await slashes.sync()
+	await slashes.sync(guild=test_server)
 	await bot.change_presence(status=Status.online, activity=Game(Config.status))
 
 
