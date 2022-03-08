@@ -25,7 +25,7 @@ async def kick(interaction: Interaction, member: Member, reason: str = ""):
 @bot.event
 async def on_ready():
 	print("running")
-	await slashes.sync(guild=Object(id=843994109366501376))
+	await slashes.sync()
 	await bot.change_presence(status=Status.online, activity=Game(Config.status))
 
 
