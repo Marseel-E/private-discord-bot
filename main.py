@@ -21,6 +21,7 @@ async def test_slash(interaction: Interaction, msg: str = None):
 @bot.event
 async def on_ready():
 	print("running")
+	await slashes.sync(guild=Object(id=843994109366501376))
 	await bot.change_presence(status=Status.online, activity=Game(Config.status))
 
 
@@ -30,6 +31,5 @@ if __name__ == '__main__':
 			try: bot.load_extension(f"cogs.{file[:-3]}")
 			except Exception as e: print('\n', f"ERROR: failed to load '{file[:-3]}':\n", e, '\n')
 			else: print(f"INFO: loaded '{file[:-3]}'")
-
 
 bot.run(os.environ.get("TOKEN"))
