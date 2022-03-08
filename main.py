@@ -13,7 +13,7 @@ bot = Bot(command_prefix=when_mentioned_or(Config.prefix), intents=Intents.all()
 slashes = commandTree(bot)
 
 
-@slashes.command(guild=Object(id=843994109366501376)
+@slashes.command(guild=Object(id=843994109366501376))
 async def test_slash(interaction: Interaction, msg: str = None):
 	await interaction.response.send_message(msg or "Worked", ephemeral=True)
 
