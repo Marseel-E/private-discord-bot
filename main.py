@@ -18,11 +18,11 @@ test_server = Object(id=843994109366501376)
 async def kick(interaction: Interaction, member: Member, reason: str = ""):
 	assert (await bot.is_owner(interaction.user))
 
-	try: await member.send(f"you got kicked by '{interaction.user}'" + (f" for {reason}" if (reason) else ""))
+	try: await member.send(f"you got kicked by `{interaction.user}`" + (f" for `{reason}`" if (reason) else ""))
 	except: pass
 
 	await interaction.guild.kick(member, reason=reason)
-	await interaction.response.send_message(f"kicked '{member}'", ephemeral=True)
+	await interaction.response.send_message(f"kicked `{member}`", ephemeral=True)
 
 
 @slashes.command(guild=test_server)
