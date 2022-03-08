@@ -25,6 +25,15 @@ async def kick(interaction: Interaction, member: Member, reason: str = ""):
 	await interaction.response.send_message(f"kicked '{member}'", ephemeral=True)
 
 
+@slashes.command(guild=test_server)
+async def purge(interaction: Interaction, amount: int = 1, reverse: bool = False):
+	assert (await bot.is_owner(interaction.user))
+	
+	await interaction.channel.purge(amount, oldest_first=reverse)
+	
+	await interaction.response.send_message(f"deleted `{amount}` messages.", ephemeral=True)
+
+
 @bot.event
 async def on_ready():
 	print("running")
