@@ -14,8 +14,11 @@ slashes = CommandTree(bot)
 
 
 @slashes.command(guild=Object(id=843994109366501376))
-async def test_slash(interaction: Interaction, msg: str = None):
-	await interaction.response.send_message(msg or "Worked", ephemeral=True)
+async def kick(interaction: Interaction, member: Member, reason: str = ""):
+	assert (bot.is_owner(interaction.user))
+
+	await interaction.guild.kick(member, reason=reason)
+	await interaction.user.send_message(f"kicked '{member}'", ephemeral=True)
 
 
 @bot.event
