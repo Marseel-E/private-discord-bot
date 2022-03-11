@@ -10,7 +10,7 @@ from utils import Config
 load_dotenv('.env')
 
 bot = Bot(command_prefix=when_mentioned_or(Config.prefix), intents=Intents.all())
-slashes = CommandTree(bot)
+slashes = bot.tree
 test_server = Object(id=843994109366501376)
 
 
