@@ -11,7 +11,7 @@ class Test_slash(Cog):
 
 
     @command()
-    @guilds(guild=test_guild)
+    @guilds(test_guild)
     async def test(self, interaction: Interaction):
         await interaction.response.send_message("works", ephemeral=True)
 
