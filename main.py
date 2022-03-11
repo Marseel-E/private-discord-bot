@@ -37,7 +37,7 @@ async def purge(interaction: Interaction, amount: int = 1, reverse: bool = False
 @bot.event
 async def on_ready():
 	print("running")
-	await slashes.sync(guild=test_server)
+	await slashes.sync()
 	await bot.change_presence(status=Status.online, activity=Game(Config.status))
 
 
