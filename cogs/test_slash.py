@@ -1,5 +1,5 @@
 from discord import Interaction, Object
-from discord.app_commands import command
+from discord.app_commands import command, guilds
 from discord.ext.commands import Cog
 
 
@@ -10,7 +10,8 @@ class Test_slash(Cog):
         self.bot = bot
 
 
-    @command(guild=test_guild)
+    @command()
+    @guilds(guild=test_guild)
     async def test(self, interaction: Interaction):
         await interaction.response.send_message("works", ephemeral=True)
 
