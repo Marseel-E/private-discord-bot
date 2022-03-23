@@ -1,4 +1,6 @@
 [![Discord server](https://discord.com/api/guilds/843994109366501376/embed.png)](https://discord.gg/DFDUpXJNdc)
+[![Discord.py](https://img.shields.io/badge/Discord.py-2.0-blue)](https://github.com/Rapptz/discord.py)
+[![Supported Python versions](https://img.shields.io/pypi/pyversions/discord.py.svg)](https://pypi.python.org/pypi/discord.py)
 
 # 🤖 private-discord-bot
 A simple moderation/utilities bot made for **[Æ ༽༼#0533](https://discord.com/users/470866478720090114)**'s servers.
