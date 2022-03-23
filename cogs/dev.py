@@ -38,16 +38,16 @@ class Dev(Cog):
 
 
 	@command(aliases=['uu'])
-	async def update_username(self, ctx: Context, *, new_username: str = ""):
+	async def update_username(self, ctx: Context, new_username: str = None):
 		""" Updates the bot's username.
 
 		Parameters:
 		-----------
 			new_username <str> - The new username.
 		"""
-		await ctx.message.delete()
+		new_username = new_username or self.bot.name
 
-		if not (new_username): await ctx.send("You need to pass a username", delete_after=5); return
+		await ctx.message.delete()
 
 		await self.bot.user.edit(username=new_username)
 
@@ -175,5 +175,5 @@ class Dev(Cog):
 		else: await ctx.send(f"[{cog}]: Reloaded..")
 
 
-def setup(bot):
-	bot.add_cog(Dev(bot))
+async def setup(bot):
+	await bot.add_cog(Dev(bot))

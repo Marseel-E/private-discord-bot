@@ -1,8 +1,8 @@
 import random
 
 from discord import User, Member, Interaction, TextStyle, ButtonStyle, Message
-from discord.ui import Modal, TextInput, View, Button, button
 from discord.ext.commands import Cog, command, is_owner, Context
+from discord.ui import Modal, TextInput, View, Button, button
 from typing import Optional, Union
 
 from utils import Config
@@ -16,9 +16,14 @@ class Captcha(Modal, title="Verify your a human"):
 	answer = TextInput(label=f"Write the following '{captcah}'", style=TextStyle.short, placeholder="Captcha code", min_length=6, max_length=6)
 
 	async def on_submit(self, interaction: Interaction):
-		msg = "Verified" if (str(self.answer).upper() == self.captcah) else "Your a robot"
-		
-		await interaction.response.send_message(msg, ephemeral=True)
+		if not (str(self.answer).upper() == self.captcah):
+			await interaction.user.send("You failed your captcha.")
+			await interaction.user.kick(reason="Failed captcha")
+
+			return
+
+		await interaction.response.send_message("Verified", ephemeral=True)
+		await interaction.user.add_roles(interaction.guild.get_role(Config.verify_role))
 
 
 class Captcha_view(View):
@@ -69,5 +74,5 @@ class Join(Cog):
 		await msg.edit(f"{ctx.author.mention}, " + Config.verify_message, view=view)
 
 
-def setup(bot):
-	bot.add_cog(Join(bot))
+async def setup(bot):
+	await bot.add_cog(Join(bot))
