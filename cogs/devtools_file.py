@@ -18,7 +18,7 @@ async def create_and_write(interaction: Interaction, name: str, content: str) ->
 	with open(FILE_PATH, 'w+') as f:
 		f.write(content)
 
-	await interaction.response.send_message(f":white_check_mark: Written `{os.path.getsize(FILE_PATH)}` bytes to '{self.name}'", ephemeral=True)
+	await interaction.response.send_message(f":white_check_mark: Written `{os.path.getsize(FILE_PATH)}` bytes to '{name}'", ephemeral=True)
 
 def get_file_content(name: str) -> str:
 	with open(f'dev_files/{name}', 'r') as f:
