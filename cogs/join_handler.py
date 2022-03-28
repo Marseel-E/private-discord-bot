@@ -40,7 +40,7 @@ class Captcha_view(View):
 
 
 	@button(label="Verify", style=ButtonStyle.green)
-	async def captcah_button(self, button: Button, interaction: Interaction):
+	async def captcah_button(self, interaction: Interaction, button: Button):
 		await interaction.response.send_modal(Captcha())
 		
 		self.stop()
