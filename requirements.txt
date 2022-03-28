@@ -1,3 +1,4 @@
 python-dotenv
 git+https://github.com/Rapptz/discord.py
 discord.py-paginator
+mystbin.py
