@@ -5,7 +5,7 @@ from discord import Interaction, TextStyle
 from discord.ext.commands import Cog, Bot
 from discord.ui import Modal, TextInput
 
-from utils import test_server, is_owner
+from utils import Default, is_owner
 
 
 async def create_and_write(interaction: Interaction, name: str, content: str) -> None:
@@ -88,4 +88,4 @@ class File(Cog, Group, name="file"):
 
 
 async def setup(bot: Bot):
-	await bot.add_cog(File(bot), guilds=[test_server])
+	await bot.add_cog(File(bot), guilds=[Default.test_server])
