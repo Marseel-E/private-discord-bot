@@ -10,7 +10,7 @@ from paginator import Paginator
 from mystbin import Client
 from io import StringIO
 
-from utils import test_server, is_owner, default_color
+from utils import Default, is_owner, Color
 
 
 mystbin_client = Client()
@@ -48,13 +48,13 @@ class Eval_modal(Modal, title="Eval"):
 		}
 
 		if len(output) < 2000:
-			await interaction.response.send_message(embed=Embed(description=output, color=default_color))
+			await interaction.response.send_message(embed=Embed(description=output, color=Color.default))
 			return
 
 		pages = []
 		for i in range(0, len(output), 2000 - len(self.code)):
 			new_output = ""
-			new_output = Embed(description=format_output(self.code, output[i:i+2000-len(code)]), color=default_color)
+			new_output = Embed(description=format_output(self.code, output[i:i+2000-len(code)]), color=Color.default)
 			
 			pages.append(new_output)
 
@@ -69,7 +69,7 @@ class Eval(Cog):
 
 
 	@command()
-	@guilds(test_server)
+	@guilds(Default.test_server)
 	@check(is_owner)
 	async def eval(self, interaction: Interaction, code: str = None, formatted: bool = True, ephemeral: bool = False, mystbin: bool = False, timeout: float = 300.0):
 		bot = self.bot
@@ -88,7 +88,7 @@ class Eval(Cog):
 					pages = []
 					for i in range(0, len(output), 2000 - len(code)):
 						if not (formatted): new_output = output[i:i+2000-len(code)]
-						else: new_output = Embed(description=format_output(code, output[i:i+2000-len(code)]), color=default_color)
+						else: new_output = Embed(description=format_output(code, output[i:i+2000-len(code)]), color=Color.default)
 
 						pages.append(new_output)
 
@@ -99,7 +99,7 @@ class Eval(Cog):
 
 				else:
 					if not (formatted): kwargs['content'] = output 
-					else: kwargs['embed'] = Embed(description=format_output(code, output), color=default_color)
+					else: kwargs['embed'] = Embed(description=format_output(code, output), color=Color.default)
 
 			await interaction.response.send_message(**kwargs)
 			return
