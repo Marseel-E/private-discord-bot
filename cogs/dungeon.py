@@ -1,4 +1,4 @@
-from discord.ext.commands import Bot
+from discord.ext.commands import Cog, Bot
 from discord.app_commands import command, check, Range 
 from discord import Interaction as Inter
 
