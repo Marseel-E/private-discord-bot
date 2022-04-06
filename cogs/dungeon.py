@@ -1,6 +1,6 @@
 from discord.ext.commands import Cog, Bot
 from discord.app_commands import command, check, Range 
-from discord import Interaction as Inter, embed
+from discord import Interaction as Inter, Embed
 
 from utils import is_owner, Dungeon, Default
 
