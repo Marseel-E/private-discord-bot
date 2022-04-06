@@ -18,6 +18,7 @@ class Dungeon_slash(Cog):
 		embed = Embed(title="Dungeon", description="", color=Default.color)
 
 		for row in range(rows):
+			embed.description += "\n"
 			for col in range(columns):
 				embed.description += game.tiles[row][col].icon
 
