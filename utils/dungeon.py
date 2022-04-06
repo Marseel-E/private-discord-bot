@@ -13,16 +13,16 @@ class Tile:
 
 class Path(Tile):
 	def __init__(self) -> None:
-		super().__init__(icon="_")
+		super().__init__(icon="🟫")
 
 class Door(Tile):
 	def __init__(self, _type: str) -> None:
 		self.type = _type
-		super().__init__(icon="|")
+		super().__init__(icon="🚪")
 
 class Wall(Tile):
 	def __init__(self) -> None:
-		super().__init__(icon="[]")
+		super().__init__(icon="⬛")
 
 
 class Dungeon:
