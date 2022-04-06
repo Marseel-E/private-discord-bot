@@ -13,7 +13,7 @@ class Tile:
 
 class Path(Tile):
 	def __init__(self) -> None:
-		super().__init__(icon="🟫")
+		super().__init__(icon="🟨")
 
 class Door(Tile):
 	def __init__(self, _type: str) -> None:
