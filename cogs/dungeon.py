@@ -22,7 +22,7 @@ class Dungeon_slash(Cog):
 			for col in range(columns):
 				embed.description += game.tiles[row][col].icon
 
-		await inter.response.send_message(embed=embed, ephemeral=True)
+		await inter.response.send_message(embed=embed)
 
 
 async def setup(bot: Bot) -> None:
