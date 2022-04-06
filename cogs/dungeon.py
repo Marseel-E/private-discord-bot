@@ -12,7 +12,7 @@ class Dungeon_slash(Cog):
 
 	@command()
 	@check(is_owner)
-	async def dungeon(self, inter: Inter, rows: Range[int, 5, 100] = 10, columns: Range[int, 5, 100] = 10):
+	async def dungeon(self, inter: Inter, rows: Range[int, 5, 20] = 10, columns: Range[int, 5, 20] = 10):
 		game = Dungeon(rows, columns)
 
 		embed = Embed(title="Dungeon", description="", color=Default.color)
