@@ -10,35 +10,37 @@ from time import sleep
 @dataclass
 class Entity:
 	icon: str
+	type: str
 
 class Player(Entity):
 	def __init__(self, _id: int) -> None:
 		self.id = _id
-		super().__init__(icon="🦊")
+		super().__init__(icon="🦊", type="player")
 
 
 @dataclass
 class Tile:
 	icon: str
+	type: str
 
 class Path(Tile):
 	def __init__(self) -> None:
-		super().__init__(icon="🟨")
+		super().__init__(icon="🟨", type="path")
 
 class Door(Tile):
 	def __init__(self, _type: str) -> None:
 		self.type = _type
-		super().__init__(icon="🚪")
+		super().__init__(icon="🚪", type="door")
 
 class Wall(Tile):
 	def __init__(self) -> None:
-		super().__init__(icon="⬛")
+		super().__init__(icon="⬛", type="door")
 
 
 class Dungeon:
 	def __init__(self, player_id: int, rows: int = 10, columns: int = 10) -> None:
 		self.player = Player(player_id)
-		
+
 		self.start = (0, 0)
 		self.end = (0, 0)
 

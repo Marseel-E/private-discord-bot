@@ -6,10 +6,21 @@ from discord.ui import View, Button, button
 from utils import is_owner, Dungeon, Default
 
 
+win_embed = Embed(title="Dungeon", description=":tada: You win! :tada:", color=Default.color)
+
+
+async def style_dungeon_embed(rows: int, embed: Embed, columns: int, game: Dungeon) -> None:
+	for row in range(rows):
+		embed.description += "\n"
+		for col in range(columns):
+			embed.description += game.tiles[row][col].icon
+
+
 class Controls(View):
-	def __init__(self, inter: Inter, game) -> None:
+	def __init__(self, inter: Inter, game: Dungeon, embed: Embed) -> None:
 		self._inter = inter
 		self.game = game
+		self.embed = embed
 		super().__init__(timeout=120.0)
 
 	async def interaction_check(self, inter: Inter) -> bool:
@@ -28,9 +39,17 @@ class Controls(View):
 			for y in range(self.game.cols):
 				if self.game.tiles[x][y].type == "player":
 					if x > 0:
-						if self.game.tiles[x-1][y].type != "wall":
-							self.game.tiles[x][y] = self.game.tiles[x-1][y]
+						if self.game.tiles[x-1][y].type == "path":
+							self.game.tiles[x][y] = Path()
 							self.game.tiles[x-1][y] = self.game.player
+
+							await style_dungeon_embed(self.game.rows, self.embed, self.game.cols, self.game)
+
+						if self.game.tiles[x-1][y].type == "door":
+							e_x, e_y = self.game.end
+							if (x-1 == e_x) and (y == e_y):
+								self._inter.edit_original_message(embed=win_embed, view=self)
+								self.stop()
 
 	@button(label="🔽", style=ButtonStyle.green, row=0)
 	async def down(self, inter: Inter, button: Button):
@@ -38,9 +57,17 @@ class Controls(View):
 			for y in range(self.game.cols):
 				if self.game.tiles[x][y].type == "player":
 					if x < (self.game.rows - 1):
-						if self.game.tiles[x+1][y].type != "wall":
-							self.game.tiles[x][y] = self.game.tiles[x+1][y]
+						if self.game.tiles[x+1][y].type == "path":
+							self.game.tiles[x][y] = Path()
 							self.game.tiles[x+1][y] = self.game.player
+
+							await style_dungeon_embed(self.game.rows, self.embed, self.game.cols, self.game)
+
+						if self.game.tiles[x+1][y].type == "door":
+							e_x, e_y = self.game.end
+							if (x+1 == e_x) and (y == e_y):
+								self._inter.edit_original_message(embed=win_embed, view=self)
+								self.stop()
 
 	@button(label="◀", style=ButtonStyle.green, row=1)
 	async def left(self, inter: Inter, button: Button):
@@ -48,9 +75,17 @@ class Controls(View):
 			for y in range(self.game.cols):
 				if self.game.tiles[x][y].type == "player":
 					if y > 0:
-						if self.game.tiles[x][y-1].type != "wall":
-							self.game.tiles[x][y] = self.game.tiles[x][-1]
+						if self.game.tiles[x][y-1].type == "path":
+							self.game.tiles[x][y] = Path()
 							self.game.tiles[x][y-1] = self.game.player
+
+							await style_dungeon_embed(self.game.rows, self.embed, self.game.cols, self.game)
+
+						if self.game.tiles[x][y-1].type == "door":
+							e_x, e_y = self.game.end
+							if (x == e_x) and (y-1 == e_y):
+								self._inter.edit_original_message(embed=win_embed, view=self)
+								self.stop()
 
 	@button(label="▶", style=ButtonStyle.green, row=1)
 	async def right(self, inter: Inter, button: Button):
@@ -58,9 +93,17 @@ class Controls(View):
 			for y in range(self.game.cols):
 				if self.game.tiles[x][y].type == "player":
 					if y < (self.game.cols - 1):
-						if self.game.tiles[x][y+1].type != "wall":
-							self.game.tiles[x][y] = self.game.tiles[x][y+1]
+						if self.game.tiles[x][y+1].type == "path":
+							self.game.tiles[x][y] = Path()
 							self.game.tiles[x][y+1] = self.game.player
+
+							await style_dungeon_embed(self.game.rows, self.embed, self.game.cols, self.game)
+
+						if self.game.tiles[x][y+1].type == "door":
+							e_x, e_y = self.game.end
+							if (x == e_x) and (y+1 == e_y):
+								self._inter.edit_original_message(embed=win_embed, view=self)
+								self.stop()
 
 
 class Dungeon_slash(Cog):
@@ -75,12 +118,9 @@ class Dungeon_slash(Cog):
 
 		embed = Embed(title="Dungeon", description="", color=Default.color)
 
-		for row in range(rows):
-			embed.description += "\n"
-			for col in range(columns):
-				embed.description += game.tiles[row][col].icon
+		await style_dungeon_embed(rows, embed, columns, game)
 
-		view = Controls(inter, game)
+		view = Controls(inter, game, embed)
 		await inter.response.send_message(embed=embed, view=view)
 		await view.wait()
 
