@@ -3,7 +3,7 @@ from discord.app_commands import command, check, Range
 from discord import Interaction as Inter, Embed, ButtonStyle
 from discord.ui import View, Button, button
 
-from utils import is_owner, Dungeon, Default
+from utils import is_owner, Dungeon, Default, Path
 
 
 win_embed = Embed(title="Dungeon", description=":tada: You win! :tada:", color=Default.color)

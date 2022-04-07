@@ -1,3 +1,3 @@
 from .tools import *
 from .checks import *
-from .dungeon import Dungeon
+from .dungeon import *

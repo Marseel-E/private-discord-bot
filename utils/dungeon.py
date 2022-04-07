@@ -1,4 +1,4 @@
-__all__ = ('Dungeon')
+__all__ = ('Dungeon', 'Path', 'Wall', 'Door', 'Entity', 'Tile')
 
 from random import randint, choice
 from typing import Optional, List
