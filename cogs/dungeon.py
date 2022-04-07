@@ -48,7 +48,7 @@ class Controls(View):
 						if self.game.tiles[x-1][y].type == "door":
 							e_x, e_y = self.game.end
 							if (x-1 == e_x) and (y == e_y):
-								self._inter.edit_original_message(embed=win_embed, view=self)
+								await self._inter.edit_original_message(embed=win_embed, view=self)
 								self.stop()
 
 	@button(label="🔽", style=ButtonStyle.green, row=0)
@@ -66,7 +66,7 @@ class Controls(View):
 						if self.game.tiles[x+1][y].type == "door":
 							e_x, e_y = self.game.end
 							if (x+1 == e_x) and (y == e_y):
-								self._inter.edit_original_message(embed=win_embed, view=self)
+								await self._inter.edit_original_message(embed=win_embed, view=self)
 								self.stop()
 
 	@button(label="◀", style=ButtonStyle.green, row=1)
@@ -84,7 +84,7 @@ class Controls(View):
 						if self.game.tiles[x][y-1].type == "door":
 							e_x, e_y = self.game.end
 							if (x == e_x) and (y-1 == e_y):
-								self._inter.edit_original_message(embed=win_embed, view=self)
+								await self._inter.edit_original_message(embed=win_embed, view=self)
 								self.stop()
 
 	@button(label="▶", style=ButtonStyle.green, row=1)
@@ -102,7 +102,7 @@ class Controls(View):
 						if self.game.tiles[x][y+1].type == "door":
 							e_x, e_y = self.game.end
 							if (x == e_x) and (y+1 == e_y):
-								self._inter.edit_original_message(embed=win_embed, view=self)
+								await self._inter.edit_original_message(embed=win_embed, view=self)
 								self.stop()
 
 
