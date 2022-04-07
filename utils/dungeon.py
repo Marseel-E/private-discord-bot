@@ -8,6 +8,16 @@ from time import sleep
 
 
 @dataclass
+class Entity:
+	icon: str
+
+class Player(Entity):
+	def __init__(self, _id: int) -> None:
+		self.id = _id
+		super().__init__(icon="🦊")
+
+
+@dataclass
 class Tile:
 	icon: str
 
@@ -26,7 +36,9 @@ class Wall(Tile):
 
 
 class Dungeon:
-	def __init__(self, rows: int = 10, columns: int = 10) -> None:
+	def __init__(self, player_id: int, rows: int = 10, columns: int = 10) -> None:
+		self.player = Player(player_id)
+		
 		self.start = (0, 0)
 		self.end = (0, 0)
 
@@ -153,6 +165,9 @@ class Dungeon:
 					): continue
 
 					self.tiles[x][y] = Path() # choice([Path(), Wall()])
+
+		x, y = self.start
+		self.tiles[x][y+1] = self.player
 
 
 	def style_map(self) -> List[List[str]]:
