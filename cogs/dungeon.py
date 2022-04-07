@@ -24,19 +24,43 @@ class Controls(View):
 
 	@button(label="🔼", style=ButtonStyle.green, row=0)
 	async def up(self, inter: Inter, button: Button):
-		pass
+		for x in range(self.game.rows):
+			for y in range(self.game.cols):
+				if self.game.tiles[x][y].type == "player":
+					if x > 0:
+						if self.game.tiles[x-1][y].type != "wall":
+							self.game.tiles[x][y] = self.game.tiles[x-1][y]
+							self.game.tiles[x-1][y] = self.game.player
 
 	@button(label="🔽", style=ButtonStyle.green, row=0)
 	async def down(self, inter: Inter, button: Button):
-		pass
+		for x in range(self.game.rows):
+			for y in range(self.game.cols):
+				if self.game.tiles[x][y].type == "player":
+					if x < (self.game.rows - 1):
+						if self.game.tiles[x+1][y].type != "wall":
+							self.game.tiles[x][y] = self.game.tiles[x+1][y]
+							self.game.tiles[x+1][y] = self.game.player
 
 	@button(label="◀", style=ButtonStyle.green, row=1)
 	async def left(self, inter: Inter, button: Button):
-		pass
+		for x in range(self.game.rows):
+			for y in range(self.game.cols):
+				if self.game.tiles[x][y].type == "player":
+					if y > 0:
+						if self.game.tiles[x][y-1].type != "wall":
+							self.game.tiles[x][y] = self.game.tiles[x][-1]
+							self.game.tiles[x][y-1] = self.game.player
 
 	@button(label="▶", style=ButtonStyle.green, row=1)
 	async def right(self, inter: Inter, button: Button):
-		pass
+		for x in range(self.game.rows):
+			for y in range(self.game.cols):
+				if self.game.tiles[x][y].type == "player":
+					if y < (self.game.cols - 1):
+						if self.game.tiles[x][y+1].type != "wall":
+							self.game.tiles[x][y] = self.game.tiles[x][y+1]
+							self.game.tiles[x][y+1] = self.game.player
 
 
 class Dungeon_slash(Cog):
