@@ -22,19 +22,19 @@ class Controls(View):
 		await self._inter.edit_original_message(view=self)
 
 
-	@button(label="UP", style=ButtonStyle.green, row=0)
+	@button(label="🔼", style=ButtonStyle.green, row=0)
 	async def up(self, inter: Inter, button: Button):
 		pass
 
-	@button(label="DOWN", style=ButtonStyle.green, row=0)
+	@button(label="🔽", style=ButtonStyle.green, row=0)
 	async def down(self, inter: Inter, button: Button):
 		pass
 
-	@button(label="LEFT", style=ButtonStyle.green, row=1)
+	@button(label="◀", style=ButtonStyle.green, row=1)
 	async def left(self, inter: Inter, button: Button):
 		pass
 
-	@button(label="RIGHT", style=ButtonStyle.green, row=1)
+	@button(label="▶", style=ButtonStyle.green, row=1)
 	async def right(self, inter: Inter, button: Button):
 		pass
 
