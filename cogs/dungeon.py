@@ -35,7 +35,7 @@ class Controls(View):
 			await self._inter.edit_original_message(view=self)
 
 
-	def get_player(self) -> Tuple(int):
+	def get_player(self) -> Tuple[int]:
 		for x in range(self.game.rows):
 			for y in range(self.game.cols):
 				if self.game.tiles[x][y].type == "player":
