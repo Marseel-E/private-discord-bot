@@ -2,6 +2,7 @@ from discord.ext.commands import Cog, Bot
 from discord.app_commands import command, check, Range 
 from discord import Interaction as Inter, Embed, ButtonStyle
 from discord.ui import View, Button, button
+from typing import Tuple
 
 from utils import is_owner, Dungeon, Default, Path
 
@@ -27,83 +28,105 @@ class Controls(View):
 		return (inter.user.id == self._inter.user.id)
 
 	async def on_timeout(self) -> None:
-		for item in self.children:
-			item.disabled = True
+		if (self.children):
+			for item in self.children:
+				item.disabled = True
 
-		await self._inter.edit_original_message(view=self)
+			await self._inter.edit_original_message(view=self)
+
+
+	def get_player(self) -> Tuple(int):
+		for x in range(self.game.rows):
+			for y in range(self.game.cols):
+				if self.game.tiles[x][y].type == "player":
+					return (x, y)
 
 
 	@button(label="🔼", style=ButtonStyle.green, row=0)
 	async def up(self, inter: Inter, button: Button):
-		for x in range(self.game.rows):
-			for y in range(self.game.cols):
-				if self.game.tiles[x][y].type == "player":
-					if x > 0:
-						if self.game.tiles[x-1][y].type == "path":
-							self.game.tiles[x][y] = Path()
-							self.game.tiles[x-1][y] = self.game.player
+		x, y = self.get_player()
 
-							await style_dungeon_embed(self.game.rows, self.embed, self.game.cols, self.game)
+		if x > 0:
+			if self.game.tiles[x-1][y].type == "path":
+				self.game.tiles[x][y] = Path()
+				self.game.tiles[x-1][y] = self.game.player
 
-						if self.game.tiles[x-1][y].type == "door":
-							e_x, e_y = self.game.end
-							if (x-1 == e_x) and (y == e_y):
-								await self._inter.edit_original_message(embed=win_embed, view=self)
-								self.stop()
+				await style_dungeon_embed(self.game.rows, self.embed, self.game.cols, self.game)
+
+			if self.game.tiles[x-1][y].type == "door":
+				e_x, e_y = self.game.end
+				if (x-1 == e_x) and (y == e_y):
+					await self._inter.edit_original_message(embed=win_embed, view=self)
+					self.stop()
 
 	@button(label="🔽", style=ButtonStyle.green, row=0)
 	async def down(self, inter: Inter, button: Button):
-		for x in range(self.game.rows):
-			for y in range(self.game.cols):
-				if self.game.tiles[x][y].type == "player":
-					if x < (self.game.rows - 1):
-						if self.game.tiles[x+1][y].type == "path":
-							self.game.tiles[x][y] = Path()
-							self.game.tiles[x+1][y] = self.game.player
+		x, y = self.get_player()
 
-							await style_dungeon_embed(self.game.rows, self.embed, self.game.cols, self.game)
+		if x < (self.game.rows - 1):
+			if self.game.tiles[x+1][y].type == "path":
+				self.game.tiles[x][y] = Path()
+				self.game.tiles[x+1][y] = self.game.player
 
-						if self.game.tiles[x+1][y].type == "door":
-							e_x, e_y = self.game.end
-							if (x+1 == e_x) and (y == e_y):
-								await self._inter.edit_original_message(embed=win_embed, view=self)
-								self.stop()
+				await style_dungeon_embed(self.game.rows, self.embed, self.game.cols, self.game)
+
+			if self.game.tiles[x+1][y].type == "door":
+				e_x, e_y = self.game.end
+				if (x+1 == e_x) and (y == e_y):
+					await self._inter.edit_original_message(embed=win_embed, view=self)
+					self.stop()
 
 	@button(label="◀", style=ButtonStyle.green, row=1)
 	async def left(self, inter: Inter, button: Button):
-		for x in range(self.game.rows):
-			for y in range(self.game.cols):
-				if self.game.tiles[x][y].type == "player":
-					if y > 0:
-						if self.game.tiles[x][y-1].type == "path":
-							self.game.tiles[x][y] = Path()
-							self.game.tiles[x][y-1] = self.game.player
+		x, y = self.get_player()
 
-							await style_dungeon_embed(self.game.rows, self.embed, self.game.cols, self.game)
+		if y > 0:
+			if self.game.tiles[x][y-1].type == "path":
+				self.game.tiles[x][y] = Path()
+				self.game.tiles[x][y-1] = self.game.player
 
-						if self.game.tiles[x][y-1].type == "door":
-							e_x, e_y = self.game.end
-							if (x == e_x) and (y-1 == e_y):
-								await self._inter.edit_original_message(embed=win_embed, view=self)
-								self.stop()
+				await style_dungeon_embed(self.game.rows, self.embed, self.game.cols, self.game)
+
+			if self.game.tiles[x][y-1].type == "door":
+				e_x, e_y = self.game.end
+				if (x == e_x) and (y-1 == e_y):
+					await self._inter.edit_original_message(embed=win_embed, view=self)
+					self.stop()
 
 	@button(label="▶", style=ButtonStyle.green, row=1)
 	async def right(self, inter: Inter, button: Button):
-		for x in range(self.game.rows):
-			for y in range(self.game.cols):
-				if self.game.tiles[x][y].type == "player":
-					if y < (self.game.cols - 1):
-						if self.game.tiles[x][y+1].type == "path":
-							self.game.tiles[x][y] = Path()
-							self.game.tiles[x][y+1] = self.game.player
+		x, y = self.get_player()
+		print("INFO: player", x, y)
 
-							await style_dungeon_embed(self.game.rows, self.embed, self.game.cols, self.game)
+		if y < (self.game.cols - 1):
+			print("INFO: index check passed")
 
-						if self.game.tiles[x][y+1].type == "door":
-							e_x, e_y = self.game.end
-							if (x == e_x) and (y+1 == e_y):
-								await self._inter.edit_original_message(embed=win_embed, view=self)
-								self.stop()
+			if self.game.tiles[x][y+1].type == "path":
+				print("INFO: found path")
+
+				self.game.tiles[x][y] = Path()
+				print("INFO: replaced player with path")
+				self.game.tiles[x][y+1] = self.game.player
+				print("INFO: replaced (x, y+1) with player", x, y+1)
+
+				await style_dungeon_embed(self.game.rows, self.embed, self.game.cols, self.game)
+				print("INFO: styled embed")
+
+			if self.game.tiles[x][y+1].type == "door":
+				print("INFO: found door")
+
+				e_x, e_y = self.game.end
+				print("INFO: end coordinates", e_x, e_y)
+				if (x == e_x) and (y+1 == e_y):
+					print("INFO: passed index check")
+					self.embed = win_embed
+					print("INFO: replaced embed with win embed")
+					for item in self.children:
+						await self.remove_item(item)
+					print("INFO: removed view items")
+
+		await self._inter.edit_original_message(embed=self.embed, view=self)
+		print("INFO: edited msg")
 
 
 class Dungeon_slash(Cog):
