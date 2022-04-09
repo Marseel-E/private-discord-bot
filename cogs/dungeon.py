@@ -39,10 +39,10 @@ class Controls(View):
 	async def update_children(self, inter: Inter) -> None:
 		x, y = self.get_player()
 
-		self.up.disabled = not (x > 0) or (self.game.tiles[x+1][y] == Wall())
-		self.down.disabled = not (x < (self.game.rows - 1)) or (self.game.tiles[x-1][y] == Wall())
-		self.left.disabled = not (y > 0) or (self.game.tiles[x][y+1] == Wall())
-		self.right.disabled = not (y < (self.game.cols - 1)) or (self.game.tiles[x][y-1] == Wall())
+		self.up.disabled = not (x > 0) or (self.game.tiles[x-1][y] == Wall())
+		self.down.disabled = not (x < (self.game.rows - 1)) or (self.game.tiles[x+1][y] == Wall())
+		self.left.disabled = not (y > 0) or (self.game.tiles[x][y-1] == Wall())
+		self.right.disabled = not (y < (self.game.cols - 1)) or (self.game.tiles[x][y+1] == Wall())
 
 		await inter.response.edit_message(embed=self.embed, view=self)
 
