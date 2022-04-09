@@ -23,8 +23,8 @@ class Controls(View):
 		self._inter = inter
 		self.game = game
 		self.embed = embed
-		self.update_controls()
 		super().__init__(timeout=120.0)
+		self.update_controls()
 
 	async def interaction_check(self, inter: Inter) -> bool:
 		return (inter.user.id == self._inter.user.id)
