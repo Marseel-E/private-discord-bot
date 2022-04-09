@@ -69,9 +69,7 @@ class Controls(View):
 				e_x, e_y = self.game.end
 				if (x-1 == e_x) and (y == e_y):
 					self.embed = win_embed
-					
-					for item in self.children:
-						await self.remove_item(item)
+					self.clear_items()
 
 		await self._inter.edit_original_message(embed=self.embed, view=self)
 
@@ -90,9 +88,7 @@ class Controls(View):
 				e_x, e_y = self.game.end
 				if (x+1 == e_x) and (y == e_y):
 					self.embed = win_embed
-					
-					for item in self.children:
-						await self.remove_item(item)
+					self.clear_items()
 
 		await self._inter.edit_original_message(embed=self.embed, view=self)
 
@@ -111,9 +107,7 @@ class Controls(View):
 				e_x, e_y = self.game.end
 				if (x == e_x) and (y-1 == e_y):
 					self.embed = win_embed
-					
-					for item in self.children:
-						await self.remove_item(item)
+					self.clear_items()
 
 		await self._inter.edit_original_message(embed=self.embed, view=self)
 
@@ -132,9 +126,7 @@ class Controls(View):
 
 				if (x == e_x) and (y+1 == e_y):
 					self.embed = win_embed
-					
-					for item in self.children:
-						await self.remove_item(item)
+					self.clear_items()
 
 		await self._inter.edit_original_message(embed=self.embed, view=self)
 
