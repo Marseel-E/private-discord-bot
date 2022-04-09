@@ -4,7 +4,7 @@ from discord import Interaction as Inter, Embed, ButtonStyle
 from discord.ui import View, Button, button
 from typing import Tuple
 
-from utils import is_owner, Dungeon, Default, Path, Wall
+from utils import is_owner, Dungeon, Default, Path, Wall, Door
 
 
 win_embed = Embed(title="Dungeon", description=":tada: You win! :tada:", color=Default.color)
@@ -38,11 +38,20 @@ class Controls(View):
 
 	def update_controls(self):
 		x, y = self.get_player()
+		s_x, s_y = self.game.start
 
-		self.up.disabled = not (x > 0) or (self.game.tiles[x-1][y] == Wall())
-		self.down.disabled = not (x < (self.game.rows - 1)) or (self.game.tiles[x+1][y] == Wall())
-		self.left.disabled = not (y > 0) or (self.game.tiles[x][y-1] == Wall())
-		self.right.disabled = not (y < (self.game.cols - 1)) or (self.game.tiles[x][y+1] == Wall())
+		self.up.disabled = not (x > 0) or (self.game.tiles[x-1][y] == Wall()) or (
+			self.game.tiles[x-1][y] == Door() and ((e-1 == s_x) and (y == s_y))
+		)
+		self.down.disabled = not (x < (self.game.rows - 1)) or (self.game.tiles[x+1][y] == Wall()) or (
+			self.game.tiles[x+1][y] == Door() and ((e+1 == s_x) and (y == s_y))
+		)
+		self.left.disabled = not (y > 0) or (self.game.tiles[x][y-1] == Wall()) or (
+			self.game.tiles[x][y-1] == Door() and ((e == s_x) and (y == s_y-1))
+		)
+		self.right.disabled = not (y < (self.game.cols - 1)) or (self.game.tiles[x][y+1] == Wall()) or (
+			self.game.tiles[x][y+1] == Door() and ((e == s_x) and (y+1 == s_y))
+		)
 
 	async def update_children(self, inter: Inter) -> None:
 		self.update_controls()
