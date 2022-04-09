@@ -110,7 +110,7 @@ class Dungeon:
 			[(x, y), ...] <list> - A list of all the empty points coordinates. (can be empty)
 		"""
 
-		to_disable = randint(1,4)
+		to_disable = randint(1,3)
 
 		empty_tiles = []
 
@@ -118,13 +118,13 @@ class Dungeon:
 		if (not to_disable == 1) and (x > 0) and (self.tiles[x-1][y] == Wall()):
 			empty_tiles.append((x-1, y))
 		# RIGHT
-		if (not to_disable == 2) and (y < (self.cols - 1)) and (self.tiles[x][y+1] == Wall()):
+		if (y < (self.cols - 1)) and (self.tiles[x][y+1] == Wall()):
 			empty_tiles.append((x, y+1))
 		# DOWN
-		if (not to_disable == 3) and (x < (self.rows - 1)) and (self.tiles[x+1][y] == Wall()):
+		if (not to_disable == 2) and (x < (self.rows - 1)) and (self.tiles[x+1][y] == Wall()):
 			empty_tiles.append((x+1, y))
 		# LEFT
-		if (not to_disable == 4) and (y > 0) and (self.tiles[x][y-1] == Wall()):
+		if (not to_disable == 3) and (y > 0) and (self.tiles[x][y-1] == Wall()):
 			empty_tiles.append((x, y-1))
 
 		return empty_tiles
