@@ -25,7 +25,7 @@ class Controls(View):
 		self._inter = inter
 		self.game = game
 		self.embed = embed
-		asyncio.run(update_children(self._inter))
+		asyncio.run(self.update_children(self._inter))
 		super().__init__(timeout=120.0)
 
 	async def interaction_check(self, inter: Inter) -> bool:
