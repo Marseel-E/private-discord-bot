@@ -26,18 +26,7 @@ class Controls(View):
 		super().__init__(timeout=120.0)
 
 	async def interaction_check(self, inter: Inter) -> bool:
-		if inter.user.id == self._inter.user.id:
-			x, y = self.get_player()
-
-			self.up.disabled = not (x > 0)
-			self.down.disabled = not (x < (self.game.rows - 1))
-			self.left.disabled = not (y > 0)
-			self.right.disabled = not (y < (self.game.cols - 1))
-
-			return True
-
-		return False
-
+		return (inter.user.id == self._inter.user.id)
 
 	async def on_timeout(self) -> None:
 		if (self.children):
@@ -47,12 +36,25 @@ class Controls(View):
 			await self._inter.edit_original_message(view=self)
 
 
+	async def update_children(self, inter: Inter) -> None:
+		x, y = self.get_player()
+
+		self.up.disabled = not (x > 0)
+		self.down.disabled = not (x < (self.game.rows - 1))
+		self.left.disabled = not (y > 0)
+		self.right.disabled = not (y < (self.game.cols - 1))
+
+		await interaction.response.edit_message(embed=self.embed, view=self)
+
 	def get_player(self) -> Tuple[int]:
 		for x in range(self.game.rows):
 			for y in range(self.game.cols):
 				if self.game.tiles[x][y].type == "player":
 					return (x, y)
 
+
+	@button(style=ButtonStyle.gray, disabled=True, row=0)
+	async def top_break_left(self, inter: Inter, button: Button): pass
 
 	@button(label="🔼", style=ButtonStyle.green, row=0)
 	async def up(self, inter: Inter, button: Button):
@@ -71,26 +73,10 @@ class Controls(View):
 					self.embed = win_embed
 					self.clear_items()
 
-		await self._inter.edit_original_message(embed=self.embed, view=self)
+		await self.update_children(inter)
 
-	@button(label="🔽", style=ButtonStyle.green, row=0)
-	async def down(self, inter: Inter, button: Button):
-		x, y = self.get_player()
-
-		if x < (self.game.rows - 1):
-			if self.game.tiles[x+1][y].type == "path":
-				self.game.tiles[x][y] = Path()
-				self.game.tiles[x+1][y] = self.game.player
-
-				await style_dungeon_embed(self.game.rows, self.embed, self.game.cols, self.game)
-
-			if self.game.tiles[x+1][y].type == "door":
-				e_x, e_y = self.game.end
-				if (x+1 == e_x) and (y == e_y):
-					self.embed = win_embed
-					self.clear_items()
-
-		await self._inter.edit_original_message(embed=self.embed, view=self)
+	@button(style=ButtonStyle.gray, disabled=True, row=0)
+	async def top_break_left(self, inter: Inter, button: Button): pass
 
 	@button(label="◀", style=ButtonStyle.green, row=1)
 	async def left(self, inter: Inter, button: Button):
@@ -109,7 +95,10 @@ class Controls(View):
 					self.embed = win_embed
 					self.clear_items()
 
-		await self._inter.edit_original_message(embed=self.embed, view=self)
+		await self.update_children(inter)
+
+	@button(style=ButtonStyle.gray, disabled=True, row=1)
+	async def top_break_left(self, inter: Inter, button: Button): pass
 
 	@button(label="▶", style=ButtonStyle.green, row=1)
 	async def right(self, inter: Inter, button: Button):
@@ -128,7 +117,32 @@ class Controls(View):
 					self.embed = win_embed
 					self.clear_items()
 
-		await self._inter.edit_original_message(embed=self.embed, view=self)
+		await self.update_children(inter)
+
+	@button(style=ButtonStyle.gray, disabled=True, row=2)
+	async def top_break_left(self, inter: Inter, button: Button): pass
+
+	@button(label="🔽", style=ButtonStyle.green, row=2)
+	async def down(self, inter: Inter, button: Button):
+		x, y = self.get_player()
+
+		if x < (self.game.rows - 1):
+			if self.game.tiles[x+1][y].type == "path":
+				self.game.tiles[x][y] = Path()
+				self.game.tiles[x+1][y] = self.game.player
+
+				await style_dungeon_embed(self.game.rows, self.embed, self.game.cols, self.game)
+
+			if self.game.tiles[x+1][y].type == "door":
+				e_x, e_y = self.game.end
+				if (x+1 == e_x) and (y == e_y):
+					self.embed = win_embed
+					self.clear_items()
+
+		await self.update_children(inter)
+
+	@button(style=ButtonStyle.gray, disabled=True, row=2)
+	async def top_break_left(self, inter: Inter, button: Button): pass
 
 
 class Dungeon_slash(Cog):
