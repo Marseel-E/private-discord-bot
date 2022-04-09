@@ -29,10 +29,10 @@ class Controls(View):
 		if inter.user.id == self._inter.user.id:
 			x, y = self.get_player()
 
-			self.up.disabled = !(x > 0)
-			self.down.disabled = !(x < (self.game.rows - 1))
-			self.left.disabled = !(y > 0)
-			self.right.disabled = !(y < (self.game.cols - 1))
+			self.up.disabled = not (x > 0)
+			self.down.disabled = not (x < (self.game.rows - 1))
+			self.left.disabled = not (y > 0)
+			self.right.disabled = not (y < (self.game.cols - 1))
 
 			return True
 
