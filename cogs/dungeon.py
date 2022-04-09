@@ -44,7 +44,7 @@ class Controls(View):
 		self.left.disabled = not (y > 0)
 		self.right.disabled = not (y < (self.game.cols - 1))
 
-		await interaction.response.edit_message(embed=self.embed, view=self)
+		await inter.response.edit_message(embed=self.embed, view=self)
 
 	def get_player(self) -> Tuple[int]:
 		for x in range(self.game.rows):
