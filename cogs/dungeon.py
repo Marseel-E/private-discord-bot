@@ -11,6 +11,7 @@ win_embed = Embed(title="Dungeon", description=":tada: You win! :tada:", color=D
 
 
 async def style_dungeon_embed(rows: int, embed: Embed, columns: int, game: Dungeon) -> None:
+	embed.description = ""
 	for row in range(rows):
 		embed.description += "\n"
 		for col in range(columns):
