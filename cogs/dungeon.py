@@ -23,7 +23,7 @@ class Controls(View):
 		self._inter = inter
 		self.game = game
 		self.embed = embed
-		await self.update_children(self._inter)
+		self.update_controls()
 		super().__init__(timeout=120.0)
 
 	async def interaction_check(self, inter: Inter) -> bool:
@@ -36,14 +36,16 @@ class Controls(View):
 
 			await self._inter.edit_original_message(view=self)
 
-
-	async def update_children(self, inter: Inter) -> None:
+	def update_controls(self):
 		x, y = self.get_player()
 
 		self.up.disabled = not (x > 0) or (self.game.tiles[x-1][y] == Wall())
 		self.down.disabled = not (x < (self.game.rows - 1)) or (self.game.tiles[x+1][y] == Wall())
 		self.left.disabled = not (y > 0) or (self.game.tiles[x][y-1] == Wall())
 		self.right.disabled = not (y < (self.game.cols - 1)) or (self.game.tiles[x][y+1] == Wall())
+
+	async def update_children(self, inter: Inter) -> None:
+		self.update_controls()
 
 		await inter.response.edit_message(embed=self.embed, view=self)
 
