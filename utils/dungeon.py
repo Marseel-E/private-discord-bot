@@ -111,7 +111,6 @@ class Dungeon:
 		"""
 
 		to_disable = randint(1,4)
-		print("INFO: to to_disable", to_disable)
 
 		empty_tiles = []
 
@@ -144,8 +143,14 @@ class Dungeon:
 
 	def generate_path(self) -> None:
 		"""Generates the path between the start and end points"""
+		cycle = 0
 
 		while not self.check_connection():
+			cycle += 1
+
+			if cycle > 5000:
+				exit()
+
 			if not (self.check_walls()):
 				break
 
