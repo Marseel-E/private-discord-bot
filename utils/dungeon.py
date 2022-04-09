@@ -148,9 +148,10 @@ class Dungeon:
 		while not self.check_connection():
 			cycle += 1
 
-			if cycle > 5000:
+			if cycle > 1000:
 				print("INFO: restarting generation")
 				self.tiles = [[Wall() for i in range(self.cols)] for i in range(self.rows)]
+				self.generate_points()
 				self.generate_path()
 
 			if not (self.check_walls()):
@@ -206,5 +207,5 @@ class Dungeon:
 
 
 if __name__ == '__main__':
-	game = Dungeon()
+	game = Dungeon(0)
 	pprint(game.style_map())
