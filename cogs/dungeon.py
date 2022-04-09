@@ -4,7 +4,7 @@ from discord import Interaction as Inter, Embed, ButtonStyle
 from discord.ui import View, Button, button
 from typing import Tuple
 
-from utils import is_owner, Dungeon, Default, Path
+from utils import is_owner, Dungeon, Default, Path, Wall
 
 
 win_embed = Embed(title="Dungeon", description=":tada: You win! :tada:", color=Default.color)
@@ -39,10 +39,10 @@ class Controls(View):
 	async def update_children(self, inter: Inter) -> None:
 		x, y = self.get_player()
 
-		self.up.disabled = not (x > 0)
-		self.down.disabled = not (x < (self.game.rows - 1))
-		self.left.disabled = not (y > 0)
-		self.right.disabled = not (y < (self.game.cols - 1))
+		self.up.disabled = not (x > 0) or (self.game.tiles[x+1][y] == Wall())
+		self.down.disabled = not (x < (self.game.rows - 1)) or (self.game.tiles[x-1][y] == Wall())
+		self.left.disabled = not (y > 0) or (self.game.tiles[x][y+1] == Wall())
+		self.right.disabled = not (y < (self.game.cols - 1)) or (self.game.tiles[x][y-1] == Wall())
 
 		await inter.response.edit_message(embed=self.embed, view=self)
 
