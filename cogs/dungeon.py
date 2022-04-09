@@ -26,7 +26,18 @@ class Controls(View):
 		super().__init__(timeout=120.0)
 
 	async def interaction_check(self, inter: Inter) -> bool:
-		return (inter.user.id == self._inter.user.id)
+		if inter.user.id == self._inter.user.id:
+			x, y = self.get_player()
+
+			self.up.disabled = !(x > 0)
+			self.down.disabled = !(x < (self.game.rows - 1))
+			self.left.disabled = !(y > 0)
+			self.right.disabled = !(y < (self.game.cols - 1))
+
+			return True
+
+		return False
+
 
 	async def on_timeout(self) -> None:
 		if (self.children):
@@ -57,8 +68,12 @@ class Controls(View):
 			if self.game.tiles[x-1][y].type == "door":
 				e_x, e_y = self.game.end
 				if (x-1 == e_x) and (y == e_y):
-					await self._inter.edit_original_message(embed=win_embed, view=self)
-					self.stop()
+					self.embed = win_embed
+					
+					for item in self.children:
+						await self.remove_item(item)
+
+		await self._inter.edit_original_message(embed=self.embed, view=self)
 
 	@button(label="🔽", style=ButtonStyle.green, row=0)
 	async def down(self, inter: Inter, button: Button):
@@ -74,8 +89,12 @@ class Controls(View):
 			if self.game.tiles[x+1][y].type == "door":
 				e_x, e_y = self.game.end
 				if (x+1 == e_x) and (y == e_y):
-					await self._inter.edit_original_message(embed=win_embed, view=self)
-					self.stop()
+					self.embed = win_embed
+					
+					for item in self.children:
+						await self.remove_item(item)
+
+		await self._inter.edit_original_message(embed=self.embed, view=self)
 
 	@button(label="◀", style=ButtonStyle.green, row=1)
 	async def left(self, inter: Inter, button: Button):
@@ -91,43 +110,33 @@ class Controls(View):
 			if self.game.tiles[x][y-1].type == "door":
 				e_x, e_y = self.game.end
 				if (x == e_x) and (y-1 == e_y):
-					await self._inter.edit_original_message(embed=win_embed, view=self)
-					self.stop()
+					self.embed = win_embed
+					
+					for item in self.children:
+						await self.remove_item(item)
+
+		await self._inter.edit_original_message(embed=self.embed, view=self)
 
 	@button(label="▶", style=ButtonStyle.green, row=1)
 	async def right(self, inter: Inter, button: Button):
 		x, y = self.get_player()
-		print("INFO: player", x, y)
-
 		if y < (self.game.cols - 1):
-			print("INFO: index check passed")
-
 			if self.game.tiles[x][y+1].type == "path":
-				print("INFO: found path")
-
 				self.game.tiles[x][y] = Path()
-				print("INFO: replaced player with path")
 				self.game.tiles[x][y+1] = self.game.player
-				print("INFO: replaced (x, y+1) with player", x, y+1)
 
 				await style_dungeon_embed(self.game.rows, self.embed, self.game.cols, self.game)
-				print("INFO: styled embed")
 
 			if self.game.tiles[x][y+1].type == "door":
-				print("INFO: found door")
-
 				e_x, e_y = self.game.end
-				print("INFO: end coordinates", e_x, e_y)
+
 				if (x == e_x) and (y+1 == e_y):
-					print("INFO: passed index check")
 					self.embed = win_embed
-					print("INFO: replaced embed with win embed")
+					
 					for item in self.children:
 						await self.remove_item(item)
-					print("INFO: removed view items")
 
 		await self._inter.edit_original_message(embed=self.embed, view=self)
-		print("INFO: edited msg")
 
 
 class Dungeon_slash(Cog):
