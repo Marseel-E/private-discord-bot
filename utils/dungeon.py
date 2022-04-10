@@ -168,7 +168,6 @@ class Dungeon:
 			cycle += 1
 
 			if cycle > 1000:
-				print("INFO: restarting generation")
 				self.tiles = [[Wall() for i in range(self.cols)] for i in range(self.rows)]
 				self.generate_points()
 				self.generate_path()
@@ -198,8 +197,6 @@ class Dungeon:
 					): continue
 
 					self.tiles[x][y] = Path()
-
-		print("INFO: cycle", cycle)
 
 		x, y = self.start
 		self.tiles[x][y+1] = self.player
