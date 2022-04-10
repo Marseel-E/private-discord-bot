@@ -1,6 +1,6 @@
-__all__ = ('Dungeon', 'Path', 'Wall', 'Door', 'Entity', 'Tile')
+__all__ = ('Dungeon', 'Path', 'Wall', 'Door', 'Enemy', 'Entity', 'Tile')
 
-from random import randint, choice
+from random import randint, choice, choices
 from typing import Optional, List
 from dataclasses import dataclass
 from pprint import pprint
@@ -16,6 +16,12 @@ class Player(Entity):
 	def __init__(self, _id: int) -> None:
 		self.id = _id
 		super().__init__(icon="🦊", type="player")
+
+class Enemy(Entity):
+	def __init__(self, name: str, icon: str) -> None:
+		self.name = name
+		self.icon = icon
+		super().__init__(icon=self.icon, type="enemy")
 
 
 @dataclass
@@ -38,8 +44,9 @@ class Wall(Tile):
 
 
 class Dungeon:
-	def __init__(self, player_id: int, rows: int = 10, columns: int = 10) -> None:
+	def __init__(self, player_id: int, rows: int = 10, columns: int = 10, enemies: List[Enemy] = []) -> None:
 		self.player = Player(player_id)
+		self.enemies = enemies
 
 		self.start = (0, 0)
 		self.end = (0, 0)
@@ -51,6 +58,7 @@ class Dungeon:
 
 		self.generate_points()
 		self.generate_path()
+		self.generate_enemies()
 
 
 	def check_connection(self) -> bool:
@@ -95,6 +103,17 @@ class Dungeon:
 		"""
 
 		return ([Wall() for x in range(0, self.rows-1) for y in range(0, self.cols-1) if self.tiles[x][y] == Wall()])
+
+	def check_enemies(self) -> bool:
+		"""Checks if there are enemies still
+
+		Returns:
+		--------
+			True <bool> - There are enemies.
+			False <bool> - There aren't enemies.
+		"""
+
+		return ([self.tiles[x][y] for x in range(0, self.rows-1) for y in range(0, self.cols-1) if self.tiles[x][y] == Enemy()])
 
 
 	def get_empty_tiles(self, x: int, y: int) -> Optional[List[tuple]]:
@@ -153,6 +172,7 @@ class Dungeon:
 				self.tiles = [[Wall() for i in range(self.cols)] for i in range(self.rows)]
 				self.generate_points()
 				self.generate_path()
+				self.generate_enemies()
 
 			if not (self.check_walls()):
 				break
@@ -184,6 +204,33 @@ class Dungeon:
 		x, y = self.start
 		self.tiles[x][y+1] = self.player
 
+	def generate_enemies(self) -> None:
+		"""Places enemies on the map randomly"""
+		skip = True
+
+		for x in range(self.rows):
+			if not (self.enemies):
+				break
+
+			if (skip):
+				skip = False
+				continue
+
+			for y in range(self.cols):
+				if y >= 3:
+					if self.tiles[x][y].type == "path":
+						enemy = choice(self.enemies)
+
+						self.tiles[x][y] = choice([enemy, Path()])
+
+						if self.tiles[x][y].type == "enemy":
+							self.enemies.remove(enemy)
+							skip = True
+							break
+
+		if (self.enemies):
+			self.generate_enemies()
+
 
 	def style_map(self) -> List[List[str]]:
 		"""Makes the map more readable
@@ -206,6 +253,34 @@ class Dungeon:
 		return [[self.tiles[row][col].icon for col in range(self.cols)] for row in range(self.rows)]
 
 
+	@classmethod
+	def generate_enemies_list(self, amount: int) -> List[Enemy]:
+		"""Generates a list of enemies for the given amount
+
+		Parameters:
+		-----------
+			'amount' <int> - The amount of enemies to generate.
+
+		Returns:
+		--------
+			List[Enemy] <list> - The list of generates enemies.
+		"""
+		enemies_list = [
+			{"Ghost": '👻'},
+			{"Alien": '👽'},
+			{"Glitch": '👾'},
+			{"Spider": '🕷'},
+			{"Fence": '🤺'},
+			{"Bat": '🦇'},
+			{"Rat": '🐀'},
+			{"Snake": '🐍'},
+			{"Robot": '🤖'},
+			{"Clown": '🤡'}
+		]
+
+		return [Enemy(name=name, icon=icon) for enemy in [choice(enemies_list) for i in range(amount)] for name, icon in enemy.items()]
+
+
 if __name__ == '__main__':
-	game = Dungeon(0)
+	game = Dungeon(player_id=0, enemies=Dungeon.generate_enemies_list(3))
 	pprint(game.style_map())
