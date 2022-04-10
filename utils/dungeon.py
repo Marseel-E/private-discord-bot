@@ -197,7 +197,7 @@ class Dungeon:
 						y not in [i for i in range(self.cols)]
 					): continue
 
-					self.tiles[x][y] = Path() # choice([Path(), Wall()])
+					self.tiles[x][y] = Path()
 
 		print("INFO: cycle", cycle)
 
