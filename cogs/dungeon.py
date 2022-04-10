@@ -141,7 +141,7 @@ class Dungeon_slash(Cog):
 
 	@command()
 	@check(is_owner)
-	async def dungeon(self, inter: Inter, rows: Range[int, 5, 20] = 10, columns: Range[int, 5, 20] = 10, enemies_amount: Range[int, 0, 5] = 3):
+	async def dungeon(self, inter: Inter, rows: Range[int, 5, 20] = 10, columns: Range[int, 5, 20] = 10, enemies_amount: Range[int, 0, 10] = 3):
 		game = Dungeon(inter.user.id, rows, columns, enemies=Dungeon.generate_enemies_list(enemies_amount))
 
 		embed = Embed(title="Dungeon", description="", color=Default.color)
