@@ -216,6 +216,19 @@ class Dungeon:
 			for y in range(self.cols):
 				if y >= 3:
 					if self.tiles[x][y].type == "path":
+						# UP
+						if (x > 0) and (self.tiles[x-1][y].type == "enemy"):
+							continue
+						# DOWN
+						if (x < (self.rows-1)) and (self.tiles[x+1][y].type == "enemy"):
+							continue
+						# LEFT
+						if (y > 0) and (self.tiles[x][y-1].type == "enemy"):
+							continue
+						# RIGHT
+						if (y < (self.cols-1)) and (self.tiles[x][y+1].type == "enemy"):
+							continue
+
 						enemy = choice(self.enemies)
 
 						self.tiles[x][y] = choice([enemy, Path()])
