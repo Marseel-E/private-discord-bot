@@ -115,6 +115,22 @@ class Dungeon:
 
 		return ([self.tiles[x][y] for x in range(0, self.rows-1) for y in range(0, self.cols-1) if self.tiles[x][y] == Enemy()])
 
+	def is_enemy(self, x: int, y: int) -> bool:
+		"""Checks if the coordinates corospond to an Enemy tile
+
+		Parameters:
+		-----------
+			'x' <int> - The row of the tile.
+			'y' <int> - The column of the tile.
+		
+		Returns:
+		--------
+			True <bool> - It is an enemy.
+			False <bool> - It is not an enemy.
+		"""
+
+		return (self.tiles[x][y].type == "enemy")
+
 
 	def get_empty_tiles(self, x: int, y: int) -> Optional[List[tuple]]:
 		"""Fetches the empty/wall tiles around a point.
@@ -221,27 +237,27 @@ class Dungeon:
 							(
 								(
 									(x > 0) and (y > 0)
-								) and (self.tiles[x-1][y-1].type == "enemy")
+								) and (self.is_enemy(x-1, y-1))
 							) or
-							((x > 0) and (self.tiles[x-1][y].type == "enemy")) or 
+							((x > 0) and (self.is_enemy(x-1, y))) or 
 							(
 								(
 									(x > 0) and (y < (self.cols-1))
-								) and (self.tiles[x-1][y+1].type == "enemy")
+								) and (self.is_enemy(x-1, y+1))
 							) or
 							(
 								(
 									(x < (self.rows-1)) and (y > 0)
-								) and (self.tiles[x+1][y-1].type == "enemy")
+								) and (self.is_enemy(x+1, y-1))
 							) or
-							((x < (self.rows-1)) and (self.tiles[x+1][y].type == "enemy")) or 
+							((x < (self.rows-1)) and (self.is_enemy(x+1, y))) or 
 							(
 								(
 									(x < (self.rows-1)) and (y < (self.cols-1))
-								) and (self.tiles[x+1][y+1].type == "enemy")
+								) and (self.is_enemy(x+1, y+1))
 							) or
-							((y > 0) and (self.tiles[x][y-1].type == "enemy")) or 
-							((y < (self.cols-1)) and (self.tiles[x][y+1].type == "enemy"))
+							((y > 0) and (self.is_enemy(x, y-1))) or 
+							((y < (self.cols-1)) and (self.is_enemy(x, y+1)))
 						): continue
 
 						enemy = choice(self.enemies)
