@@ -53,7 +53,7 @@ class Controls(View):
 	def get_player(self) -> Tuple[int]:
 		for x in range(self.game.rows):
 			for y in range(self.game.cols):
-				if self.game.tiles[x][y].type == "player":
+				if self.game.is_player(x, y):
 					return (x, y)
 
 
@@ -62,13 +62,24 @@ class Controls(View):
 		x, y = self.get_player()
 
 		if x < (self.game.rows - 1):
-			if self.game.tiles[x+1][y].type == "path":
+			if self.game.is_path(x+1, y):
 				self.game.tiles[x][y] = Path()
+
+				# UP
+				if x > 0:
+					self.game.tiles[x-1][y].hidden = False
+				# LEFT
+				if y > 0:
+					self.game.tiles[x][y-1].hidden = False
+				# RIGHT
+				if y < (self.game.cols-1):
+					self.game.tiles[x][y+1].hidden = False
+
 				self.game.tiles[x+1][y] = self.game.player
 
 				await style_dungeon_embed(self.game.rows, self.embed, self.game.cols, self.game)
 
-			if self.game.tiles[x+1][y].type == "door":
+			if self.game.is_door(x+1, y):
 				e_x, e_y = self.game.end
 				if (x+1 == e_x) and (y == e_y):
 					self.embed = win_embed
@@ -81,13 +92,24 @@ class Controls(View):
 		x, y = self.get_player()
 
 		if x > 0:
-			if self.game.tiles[x-1][y].type == "path":
+			if self.game.is_path(x-1, y):
 				self.game.tiles[x][y] = Path()
+
+				# DOWN
+				if x < (self.game.rows-1):
+					self.game.tiles[x+1][y].hidden = False
+				# LEFT
+				if y > 0:
+					self.game.tiles[x][y-1].hidden = False
+				# RIGHT
+				if y < (self.game.cols-1):
+					self.game.tiles[x][y+1].hidden = False
+
 				self.game.tiles[x-1][y] = self.game.player
 
 				await style_dungeon_embed(self.game.rows, self.embed, self.game.cols, self.game)
 
-			if self.game.tiles[x-1][y].type == "door":
+			if self.game.is_door(x-1, y):
 				e_x, e_y = self.game.end
 				if (x-1 == e_x) and (y == e_y):
 					self.embed = win_embed
@@ -100,13 +122,24 @@ class Controls(View):
 		x, y = self.get_player()
 
 		if y > 0:
-			if self.game.tiles[x][y-1].type == "path":
+			if self.game.is_path(x, y-1):
 				self.game.tiles[x][y] = Path()
+
+				# UP
+				if x > 0:
+					self.game.tiles[x-1][y].hidden = False
+				# DOWN
+				if x < (self.game.rows-1):
+					self.game.tiles[x+1][y].hidden = False
+				# RIGHT
+				if y < (self.game.cols-1):
+					self.game.tiles[x][y+1].hidden = False
+
 				self.game.tiles[x][y-1] = self.game.player
 
 				await style_dungeon_embed(self.game.rows, self.embed, self.game.cols, self.game)
 
-			if self.game.tiles[x][y-1].type == "door":
+			if self.game.is_door(x, y-1):
 				e_x, e_y = self.game.end
 				if (x == e_x) and (y-1 == e_y):
 					self.embed = win_embed
@@ -118,13 +151,24 @@ class Controls(View):
 	async def right(self, inter: Inter, button: Button):
 		x, y = self.get_player()
 		if y < (self.game.cols - 1):
-			if self.game.tiles[x][y+1].type == "path":
+			if self.game.is_path(x, y+1):
 				self.game.tiles[x][y] = Path()
+
+				# UP
+				if x > 0:
+					self.game.tiles[x-1][y].hidden = False
+				# DOWN
+				if x < (self.game.rows-1):
+					self.game.tiles[x+1][y].hidden = False
+				# LEFT
+				if y > 0:
+					self.game.tiles[x][y-1].hidden = False
+
 				self.game.tiles[x][y+1] = self.game.player
 
 				await style_dungeon_embed(self.game.rows, self.embed, self.game.cols, self.game)
 
-			if self.game.tiles[x][y+1].type == "door":
+			if self.game.is_door(x, y+1):
 				e_x, e_y = self.game.end
 
 				if (x == e_x) and (y+1 == e_y):

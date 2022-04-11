@@ -11,36 +11,41 @@ from time import sleep
 class Entity:
 	icon: str
 	type: str
+	hidden: bool
 
 class Player(Entity):
 	def __init__(self, _id: int) -> None:
 		self.id = _id
-		super().__init__(icon="🦊", type="player")
+		super().__init__(icon="🦊", type="player", hidden=False)
 
 class Enemy(Entity):
-	def __init__(self, name: str, icon: str) -> None:
+	def __init__(self, name: str, icon: str, hidden: bool = False) -> None:
 		self.name = name
 		self.icon = icon
-		super().__init__(icon=self.icon, type="enemy")
+		self.hidden = hidden
+		super().__init__(icon=self.icon, type="enemy", hidden=self.hidden)
 
 
 @dataclass
 class Tile:
 	icon: str
 	type: str
+	hidden: bool
 
 class Path(Tile):
-	def __init__(self) -> None:
-		super().__init__(icon="🟨", type="path")
+	def __init__(self, hidden: bool = False) -> None:
+		self.hidden = hidden
+		super().__init__(icon="🟨", type="path", hidden=self.hidden)
 
 class Door(Tile):
-	def __init__(self, _type: str) -> None:
+	def __init__(self, _type: str, hidden: bool = False) -> None:
 		self.type = _type
-		super().__init__(icon="🚪", type="door")
+		self.hidden = hidden
+		super().__init__(icon="🚪", type="door", hidden=self.hidden)
 
 class Wall(Tile):
 	def __init__(self) -> None:
-		super().__init__(icon="⬛", type="door")
+		super().__init__(icon="⬛", type="door", hidden=False)
 
 
 class Dungeon:
@@ -59,6 +64,83 @@ class Dungeon:
 		self.generate_points()
 		self.generate_path()
 		self.generate_enemies()
+
+
+	def is_path(self, x: int, y: int) -> bool:
+		"""Checks if the coordinates corospond to a Path tile
+
+		Parameters:
+		-----------
+			'x' <int> - The row of the tile.
+			'y' <int> - The column of the tile.
+		
+		Returns:
+		--------
+			True <bool> - It is a path.
+			False <bool> - It is not a path.
+		"""
+		return (self.tiles[x][y].type == "path")
+
+	def is_wall(self, x: int, y: int) -> bool:
+		"""Checks if the coordinates corospond to a Wall tile
+
+		Parameters:
+		-----------
+			'x' <int> - The row of the tile.
+			'y' <int> - The column of the tile.
+		
+		Returns:
+		--------
+			True <bool> - It is a wall.
+			False <bool> - It is not a wall.
+		"""
+		return (self.tiles[x][y].type == "wall")
+
+	def is_door(self, x: int, y: int) -> bool:
+		"""Checks if the coordinates corospond to a Door tile
+
+		Parameters:
+		-----------
+			'x' <int> - The row of the tile.
+			'y' <int> - The column of the tile.
+		
+		Returns:
+		--------
+			True <bool> - It is a door.
+			False <bool> - It is not a door.
+		"""
+		return (self.tiles[x][y].type == "door")
+
+	def is_player(self, x: int, y: int) -> bool:
+		"""Checks if the coordinates corospond to a Player
+
+		Parameters:
+		-----------
+			'x' <int> - The row of the tile.
+			'y' <int> - The column of the tile.
+		
+		Returns:
+		--------
+			True <bool> - It is a player.
+			False <bool> - It is not a player.
+		"""
+		return (self.tiles[x][y].type == "player")
+
+	def is_enemy(self, x: int, y: int) -> bool:
+		"""Checks if the coordinates corospond to an Enemy
+
+		Parameters:
+		-----------
+			'x' <int> - The row of the tile.
+			'y' <int> - The column of the tile.
+		
+		Returns:
+		--------
+			True <bool> - It is an enemy.
+			False <bool> - It is not an enemy.
+		"""
+
+		return (self.tiles[x][y].type == "enemy")
 
 
 	def check_connection(self) -> bool:
@@ -81,13 +163,13 @@ class Dungeon:
 
 		if (
 			(
-				((s_x > 0) and (self.tiles[s_x-1][s_y] == Path())) or
-				(self.tiles[s_x][s_y+1] == Path()) or
-				((s_x < (self.rows - 1)) and (self.tiles[s_x+1][s_y] == Path()))
+				((s_x > 0) and (self.is_path(s_x-1, s_y))) or
+				(self.is_path(s_x, s_y+1)) or
+				((s_x < (self.rows - 1)) and (self.is_path(s_x+1, s_y)))
 			) and (
-				((e_x > 0) and (self.tiles[e_x-1][e_y] == Path())) or
-				(self.tiles[e_x][e_y-1] == Path()) or
-				((e_x < (self.rows - 1)) and (self.tiles[e_x+1][e_y] == Path()))
+				((e_x > 0) and (self.is_path(e_x-1, e_y))) or
+				(self.is_path(e_x, e_y-1)) or
+				((e_x < (self.rows - 1)) and (self.is_path(e_x+1, e_y)))
 			)
 		): return True
 
@@ -102,7 +184,7 @@ class Dungeon:
 			False <bool> - There aren't wall tiles.
 		"""
 
-		return ([Wall() for x in range(0, self.rows-1) for y in range(0, self.cols-1) if self.tiles[x][y] == Wall()])
+		return ([Wall() for x in range(0, self.rows-1) for y in range(0, self.cols-1) if self.is_wall(x, y)])
 
 	def check_enemies(self) -> bool:
 		"""Checks if there are enemies still
@@ -113,23 +195,7 @@ class Dungeon:
 			False <bool> - There aren't enemies.
 		"""
 
-		return ([self.tiles[x][y] for x in range(0, self.rows-1) for y in range(0, self.cols-1) if self.tiles[x][y] == Enemy()])
-
-	def is_enemy(self, x: int, y: int) -> bool:
-		"""Checks if the coordinates corospond to an Enemy tile
-
-		Parameters:
-		-----------
-			'x' <int> - The row of the tile.
-			'y' <int> - The column of the tile.
-		
-		Returns:
-		--------
-			True <bool> - It is an enemy.
-			False <bool> - It is not an enemy.
-		"""
-
-		return (self.tiles[x][y].type == "enemy")
+		return ([self.tiles[x][y] for x in range(0, self.rows-1) for y in range(0, self.cols-1) if self.is_enemy(x,y)])
 
 
 	def get_empty_tiles(self, x: int, y: int) -> Optional[List[tuple]]:
@@ -150,16 +216,16 @@ class Dungeon:
 		empty_tiles = []
 
 		# UP
-		if (not to_disable == 1) and (x > 0) and (self.tiles[x-1][y] == Wall()):
+		if (not to_disable == 1) and (x > 0) and (self.is_wall(x-1, y)):
 			empty_tiles.append((x-1, y))
 		# RIGHT
-		if (y < (self.cols - 1)) and (self.tiles[x][y+1] == Wall()):
+		if (y < (self.cols - 1)) and (self.is_wall(x, y+1)):
 			empty_tiles.append((x, y+1))
 		# DOWN
-		if (not to_disable == 2) and (x < (self.rows - 1)) and (self.tiles[x+1][y] == Wall()):
+		if (not to_disable == 2) and (x < (self.rows - 1)) and (self.is_wall(x+1, y)):
 			empty_tiles.append((x+1, y))
 		# LEFT
-		if (not to_disable == 3) and (y > 0) and (self.tiles[x][y-1] == Wall()):
+		if (not to_disable == 3) and (y > 0) and (self.is_wall(x, y-1)):
 			empty_tiles.append((x, y-1))
 
 		return empty_tiles
@@ -174,7 +240,7 @@ class Dungeon:
 
 		x, y = randint(0, self.rows-1), self.cols-1
 		self.end = (x, y)
-		self.tiles[x][y] = Door("end")
+		self.tiles[x][y] = Door("end", hidden=True)
 
 	def generate_path(self) -> None:
 		"""Generates the path between the start and end points"""
@@ -194,7 +260,7 @@ class Dungeon:
 
 			for x in range(0, self.rows-1):
 				for y in range(0, self.cols-1):
-					if self.tiles[x][y] == Wall():
+					if self.is_wall(x, y):
 						continue
 
 					empty_tiles = self.get_empty_tiles(x, y)
@@ -231,7 +297,7 @@ class Dungeon:
 
 			for y in range(self.cols):
 				if y >= 3:
-					if self.tiles[x][y].type == "path":
+					if self.is_path(x, y):
 						# UP-LEFT, UP, UP-RIGHT, DOWN-LEFT, DOWN, DOWN-RIGHT, LEFT, RIGHT
 						if (
 							(
@@ -262,9 +328,9 @@ class Dungeon:
 
 						enemy = choice(self.enemies)
 
-						self.tiles[x][y] = choice([enemy, Path()])
+						self.tiles[x][y] = choice([enemy, Path(hidden=True)])
 
-						if self.tiles[x][y].type == "enemy":
+						if self.is_enemy(x, y):
 							self.enemies.remove(enemy)
 							skip = True
 							break
@@ -319,7 +385,7 @@ class Dungeon:
 			{"Clown": '🤡'}
 		]
 
-		return [Enemy(name=name, icon=icon) for enemy in [choice(enemies_list) for i in range(amount)] for name, icon in enemy.items()]
+		return [Enemy(name=name, icon=icon, hidden=True) for enemy in [choice(enemies_list) for i in range(amount)] for name, icon in enemy.items()]
 
 
 if __name__ == '__main__':
