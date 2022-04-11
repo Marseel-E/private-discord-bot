@@ -297,7 +297,7 @@ class Dungeon:
 
 			for y in range(self.cols):
 				if y >= 3:
-					if self.is_path(x, y):
+					if self.tiles[x][y].type == "path":
 						# UP-LEFT, UP, UP-RIGHT, DOWN-LEFT, DOWN, DOWN-RIGHT, LEFT, RIGHT
 						if (
 							(
@@ -335,7 +335,7 @@ class Dungeon:
 							skip = True
 							break
 
-		if (self.enemies):
+		if len(self.enemies) > 3:
 			self.generate_enemies()
 
 
