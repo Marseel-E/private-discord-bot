@@ -357,7 +357,12 @@ class Dungeon:
 
 							# 	new_map.append(new_row)
 
-		return [[self.tiles[row][col].icon for col in range(self.cols)] for row in range(self.rows)]
+		new_map = self.tiles.copy()
+		for x in range(self.rows):
+			for y in range(self.cols):
+				new_map[x][y] = self.tiles[x][y].icon if not self.tiles[x][y].hidden else Wall().icon
+
+		return new_map
 
 
 	@classmethod
