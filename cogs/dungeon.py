@@ -15,7 +15,7 @@ async def style_dungeon_embed(rows: int, embed: Embed, columns: int, game: Dunge
 	for row in range(rows):
 		embed.description += "\n"
 		for col in range(columns):
-			embed.description += game.tiles[row][col].icon
+			embed.description += game.tiles[row][col].icon if not game.tiles[row][col].hidden else Wall().icon
 
 
 class Controls(View):
