@@ -4,6 +4,7 @@ from discord import Object
 
 class Color(TypedDict):
 	blurple: int = int("5261f8", 16)
+	default: int = int("5261f8", 16)
 
 
 class Default(TypedDict):
